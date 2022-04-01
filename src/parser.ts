@@ -1,39 +1,29 @@
 import peg from "pegjs";
 
 const generateNums = (start: number, end: number): string => {
-  const results = [];
+  const doubleDigit = [];
+  const singleDigit = [];
 
   for (let i = start; i <= end; i++) {
-    let result;
     if (i < 10) {
-      result = `0${i}`;
+      singleDigit.push(`${i}`);
+      doubleDigit.push(`0${i}`);
     } else {
-      result = `${i}`;
+      doubleDigit.push(`${i}`);
     }
-    results.push(`"${result}"`);
   }
 
-  return results.join(" / ");
+  return [...doubleDigit, ...singleDigit].map((r) => `"${r}"`).join(" / ");
 };
 
-const twentyfourhours = generateNums(0, 24);
-
-const twelvehours = generateNums(1, 12);
+const hours = generateNums(0, 24);
 
 const minutes = generateNums(0, 59);
 
 const grammar = `
-start = twelve / twentyfour
+start = hour (":" minute) ? period ?
 
-twelve = twelvehour minutepart ? period
-
-twelvehour = ${twelvehours}
-
-twentyfour = twentyfourhour minutepart ?
-
-twentyfourhour = ${twentyfourhours}
-
-minutepart = ":" minute
+hour = ${hours}
 
 minute = ${minutes}
 
