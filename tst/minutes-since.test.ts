@@ -41,3 +41,18 @@ describe("minutes", () => {
     });
   });
 });
+
+describe("error cases", () => {
+  const testCases = [
+    { input: "25:01" },
+    { input: ":01am" },
+    { input: "13:35pm" },
+    { input: "13:60" },
+  ];
+
+  testCases.forEach(({ input }) => {
+    it(`with input ${input}`, () => {
+      expect(() => minutesSince(input)).toThrow(/InvalidTime/);
+    });
+  });
+});

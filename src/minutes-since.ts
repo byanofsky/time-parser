@@ -1,7 +1,13 @@
 import { parser } from "./parser";
 
 export const minutesSince = (time: string): number => {
-  const tokens = parser.parse(time);
+  let tokens;
+  try {
+    tokens = parser.parse(time);
+  } catch (error) {
+    console.error("Parse Error", error);
+    throw new Error(`InvalidTime: Parse error.`);
+  }
   const hoursToken = tokens[0];
 
   if (hoursToken == null) {
@@ -21,6 +27,10 @@ export const minutesSince = (time: string): number => {
   }
 
   const periodToken = tokens[2];
+
+  if (periodToken && hours > 12) {
+    throw new Error(`InvalidTime: Hour not allowed for period.`);
+  }
 
   let minutesPastMidnight = 0;
 
