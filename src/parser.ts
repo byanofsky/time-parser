@@ -20,24 +20,24 @@ const twentyfourhours = generateNums(0, 24);
 
 const twelvehours = generateNums(1, 12);
 
-const minutes = generateNums(1, 60);
+const minutes = generateNums(0, 59);
 
 const grammar = `
 start = twelve / twentyfour
 
-twentyfour = twentyfourhour ":" minutes
-
-twentyfourhour = ${twentyfourhours}
-
-twelve = twelvehour ":" minutes period
+twelve = twelvehour minutepart ? period
 
 twelvehour = ${twelvehours}
 
-minutes = ${minutes}
+twentyfour = twentyfourhour minutepart ?
+
+twentyfourhour = ${twentyfourhours}
+
+minutepart = ":" minute
+
+minute = ${minutes}
 
 period = "am" / "pm"
-
-number = [0123456789]
 `;
 
 export const parser = peg.generate(grammar);
